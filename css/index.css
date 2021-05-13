@@ -1,0 +1,159 @@
+#videoTravis {
+    width: 720px;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    width: 100%;
+    z-index: 999;
+    height: 60px;
+    justify-content: space-between;
+    background: rgb(0,0,0);
+    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(2,0,36,0) 100%);
+    transition: all 0.2s ease;
+    position: relative;
+    padding-top: 10px;
+    position: relative;
+    top: -60px;
+}
+
+#videoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.showing {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+#buttons button {
+    width: 40px;
+    height: 30px;
+
+    margin: 5px;
+    border-radius: 5px;
+
+    color: white;
+    background: none;
+    border: none;
+}
+
+#buttons div {
+    display: flex;
+}
+
+#buttons select {
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    border: none;
+    color: white;
+    background-color: rgb(22, 22, 22);
+}
+
+#videoControllers {
+    display: flex;
+    position: relative;
+    top: -10px;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+}
+
+#video-timer {
+    display: flex;
+    max-width: 720px;
+    width: 100%;
+    height: 30px;
+    position: relative;
+    top: -20px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#timevideo::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #fff;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+#timevideo {
+    -webkit-appearance: none;
+    height: 5px;
+    transition: all 0.2s ease;
+    background-color: rgb(126, 126, 126);
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: -10px;
+}
+
+#timevideo:active {
+    background-color: blue;
+}
+
+#timevideo:before {
+    position: absolute;
+    content: '';
+    width: 40px;
+    background-color: red;
+}
+
+#timevideo:active::-webkit-slider-thumb {
+    background: white;
+}
+
+#timevideo::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: #fff;
+    opacity: 0.65;
+    border: 4px solid #c20042;
+    position: relative;
+    transition: all ease-in-out 0.05s;
+}
+
+#controllersTime {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+#volumeController {
+    display: none;
+    position: relative;
+    top: -65px;
+    transform: rotate(270deg);
+}
+
+#soundContainer button i {
+    font-size: 20px;
+}
+
+#soundContainer {
+    display: flex;
+    width: 60px;
+    height: 30px;
+    margin-top: -10px;
+    align-items: center;
+    flex-direction: column;
+}

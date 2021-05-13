@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div id="videoContainer">
+        <video id="videoTravis" class="paused" src="./video.mp4" autoplay="true">
+            Erro
+        </video>
+        <div id="buttons" class="hidden">
+            <div id="video-timer">
+                <input type="range" min="0" value="0" name="timevideo" id="timevideo">
+            </div>
+            <div id="videoControllers">
+                <div>
+                    <button id="playButton" onclick="play()" class="paused"><i class="fas fa-play"></i></button>
+                    <button id="stop"onclick="stop()"><i class="fas fa-redo"></i></button>
+                </div>
+                <div id="controllersTime">
+                    <select id="speedController">
+                        <option>0.25x</option>
+                        <option>0.5x</option>
+                        <option>1x</option>
+                        <option>1.5x</option>
+                        <option>2x</option>
+                        <option>1x</option>
+                    </select>
+                    <div id="soundContainer">
+                        <input type="range" min="0" value="10" max="10" name="volume" id="volumeController">
+                        <button id="muteVolume" onclick="mute()" class="unmuted"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/91a0d9e8ca.js" crossorigin="anonymous"></script>
+    <script src="js/video.js"></script>
+</body>
+</html>
