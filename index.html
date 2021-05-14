@@ -12,12 +12,12 @@
 </head>
 <body>
     <div id="videoContainer">
-        <video id="videoTravis" class="paused" src="./video.mp4" autoplay="true">
+        <video id="videoTravis" class="paused" src="./video.mp4">
             Erro
         </video>
         <div id="buttons" class="hidden">
             <div id="video-timer">
-                <input type="range" min="0" value="0" name="timevideo" id="timevideo">
+                <div id="timevideo"></div>
             </div>
             <div id="videoControllers">
                 <div>
@@ -26,15 +26,16 @@
                 </div>
                 <div id="controllersTime">
                     <select id="speedController">
-                        <option>0.25x</option>
-                        <option>0.5x</option>
-                        <option>1x</option>
-                        <option>1.5x</option>
-                        <option>2x</option>
-                        <option>1x</option>
+                        <option value="0.25">0.25x</option>
+                        <option value="0.5">0.5x</option>
+                        <option selected value="1">1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                        <option value="2.5">2.5x</option>
                     </select>
                     <div id="soundContainer">
-                        <input type="range" min="0" value="10" max="10" name="volume" id="volumeController">
+                        <div id="volumeController"></div>
                         <button id="muteVolume" onclick="mute()" class="unmuted"><i class="fas fa-volume-up"></i></button>
                     </div>
                 </div>

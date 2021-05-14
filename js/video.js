@@ -4,17 +4,13 @@ let muteVolume = document.getElementById('muteVolume');
 let timeVideo = document.getElementById('timevideo');
 let volumeController = document.getElementById('volumeController');
 let playButton = document.getElementById('playButton');
-
-let timeVideoDuration = videoTravis.duration;
-let minutes = parseInt(timeVideoDuration) / 60;
-
-timeVideo.max = timeVideoDuration;
+let speedController = document.getElementById('speedController')
 
 function displayButtons() {
     buttons.className = 'showing';
 }
 
-function stopDisplayButtons() {
+function stopDisplayButtons(ev) {
     buttons.className = 'hidden';
 }
 
@@ -33,12 +29,15 @@ function play() {
 
 }
 
+let lastVolume;
+
 function mute() {
     if(muteVolume.className == "unmuted") {
+        lastVolume = videoTravis.volume;
         videoTravis.volume = 0;
         muteVolume.className = "muted";
     } else {
-        videoTravis.volume = 1;
+        videoTravis.volume = lastVolume;
         muteVolume.className = "unmuted"
     }
 }
@@ -81,22 +80,43 @@ videoTravis.addEventListener('mouseleave', stopDisplayButtons)
 
 videoTravis.addEventListener('timeupdate', function(ev) {
     timeVideo.value = ev.target.currentTime;
+    updateBarWidth();
 })
 
 videoTravis.addEventListener("click", play);
 
 videoTravis.addEventListener("dblclick", function(ev) {
-    console.log(`X: ${ev.clientX}`, `Y: ${ev.clientY}`);
-    if (ev.clientX > 950) {
+    if (ev.clientX > 800) {
         advanceTenSeconds()
+    } else if (ev.clientX >= 500 && ev.clientX < 800) {
+        videoTravis.webkitRequestFullScreen();
     } else {
         backTenSeconds()
     }
+    console.log ()
 
 })
 
 buttons.addEventListener('mouseover', displayButtons);
 buttons.addEventListener('mouseleave', stopDisplayButtons)
+
+let barVideo = document.createElement("div");
+
+barVideo.style.height = "100%";
+barVideo.style.width = "0";
+barVideo.style.backgroundColor = "red";
+
+timeVideo.append(barVideo);
+
+function updateBarWidth() {
+    const videoDuration = videoTravis.duration;
+    const videoCurrentDuration = videoTravis.currentTime;
+
+    const videoDurationUpdated = (videoCurrentDuration * 100) / videoDuration;
+
+    barVideo.style.width =videoDurationUpdated + "%";
+}
+
 
 timeVideo.addEventListener('mouseover', function() {
     timeVideo.style.height = "10px";
@@ -111,22 +131,34 @@ timeVideo.addEventListener('change', function(ev) {
 })
 
 window.addEventListener('keydown', (ev) => {
+    ev.preventDefault;
     if(ev.keyCode == 32) {
         play()
     }
 
-    if (ev.key == "ArrowUp") {
+    if (ev.key === "ArrowUp") {
         increaseVolume()
     }
 
-    if (ev.key == "ArrowDown") {
+    if (ev.key === "ArrowDown") {
         decreaseVolume()
     }
 
-    if(ev.key == "m") {
+    if (ev.key === "ArrowRight") {
+        advanceTenSeconds()
+    }
+
+    if (ev.key === "ArrowLeft") {
+        backTenSeconds()
+    }
+
+    if(ev.key === "m") {
         mute()
     }
 
+    if(ev.key === "f") {
+        videoTravis.webkitRequestFullScreen();
+    }
     console.log(ev.key)
 })
 
@@ -157,3 +189,8 @@ muteVolume.addEventListener('mouseleave', function() {
 
     volumeController.style.display = "none";
 })
+
+
+speedController.addEventListener('change', function(ev) {
+    videoTravis.playbackRate = ev.target.value;
+});

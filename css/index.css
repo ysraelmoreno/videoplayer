@@ -1,28 +1,33 @@
 #videoTravis {
-    width: 720px;
+    max-width: 1280px;
+    border-radius: 10px;
 }
 
 #buttons {
     display: flex;
     flex-direction: column;
-    max-width: 720px;
+    max-width: 850px;
     width: 100%;
     z-index: 999;
     height: 60px;
     justify-content: space-between;
     background: rgb(0,0,0);
+    border-radius: 10px;
     background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(2,0,36,0) 100%);
     transition: all 0.2s ease;
     position: relative;
     padding-top: 10px;
     position: relative;
-    top: -60px;
+    top: -61px;
 }
 
 #videoContainer {
     display: flex;
+    height: 100vh;
+    border-radius: 10px;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .showing {
@@ -57,7 +62,12 @@
     padding: 5px;
     border: none;
     color: white;
-    background-color: rgb(22, 22, 22);
+    background-color: rgb(31, 31, 31);
+    transition: all 0.2s ease;
+}
+
+#buttons select:hover {
+    background-color: rgb(17, 17, 17);
 }
 
 #videoControllers {
@@ -71,7 +81,7 @@
 
 #video-timer {
     display: flex;
-    max-width: 720px;
+    max-width: 850px;
     width: 100%;
     height: 30px;
     position: relative;
@@ -82,54 +92,13 @@
     align-self: center;
 }
 
-#timevideo::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background: #fff;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-
 #timevideo {
-    -webkit-appearance: none;
     height: 5px;
     transition: all 0.2s ease;
     background-color: rgb(126, 126, 126);
     transition: all 0.2s ease;
     width: 100%;
     margin-top: -10px;
-}
-
-#timevideo:active {
-    background-color: blue;
-}
-
-#timevideo:before {
-    position: absolute;
-    content: '';
-    width: 40px;
-    background-color: red;
-}
-
-#timevideo:active::-webkit-slider-thumb {
-    background: white;
-}
-
-#timevideo::-moz-range-thumb {
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 0;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    cursor: pointer;
-    background: #fff;
-    opacity: 0.65;
-    border: 4px solid #c20042;
-    position: relative;
-    transition: all ease-in-out 0.05s;
 }
 
 #controllersTime {
@@ -139,10 +108,13 @@
 }
 
 #volumeController {
-    display: none;
+    display: flex;
     position: relative;
-    top: -65px;
-    transform: rotate(270deg);
+    top: -15px;
+    width: 15px;
+    background-color: white;
+    max-height: 5000px;
+    height: 100%;
 }
 
 #soundContainer button i {
@@ -153,7 +125,6 @@
     display: flex;
     width: 60px;
     height: 30px;
-    margin-top: -10px;
     align-items: center;
     flex-direction: column;
 }
