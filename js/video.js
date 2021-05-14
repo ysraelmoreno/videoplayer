@@ -5,6 +5,7 @@ let timeVideo = document.getElementById('timevideo');
 let volumeController = document.getElementById('volumeController');
 let playButton = document.getElementById('playButton');
 let speedController = document.getElementById('speedController')
+let textVideoDuration = document.getElementById('textVideoDuration')
 
 function displayButtons() {
     buttons.className = 'showing';
@@ -26,7 +27,6 @@ function play() {
         videoTravis.className = "paused";
         playButton.innerHTML = `<i class="fas fa-play"></i>`
     }
-
 }
 
 let lastVolume;
@@ -75,11 +75,17 @@ function advanceTenSeconds() {
     videoTravis.currentTime += 10;
 }
 
+function updateTextDuration() {
+    let videoDurationMin = videoTravis.duration / 60;
+    let videoDurationMinFixed = videoDurationMin.toFixed(2);
+    textVideoDuration.innerHTML = videoDurationMinFixed.replace('.', ':');
+}
+
 videoTravis.addEventListener('mouseover', displayButtons);
 videoTravis.addEventListener('mouseleave', stopDisplayButtons)
 
 videoTravis.addEventListener('timeupdate', function(ev) {
-    timeVideo.value = ev.target.currentTime;
+    updateTextDuration();
     updateBarWidth();
 })
 
@@ -108,15 +114,32 @@ barVideo.style.backgroundColor = "red";
 
 timeVideo.append(barVideo);
 
+let barVolume = document.createElement("div");
+
+barVolume.style.height = "100%";
+barVolume.style.width = "0";
+barVolume.style.backgroundColor = "red";
+barVolume.style.transition = "all 0.2s ease";
+volumeController.append(barVolume)
+
 function updateBarWidth() {
     const videoDuration = videoTravis.duration;
     const videoCurrentDuration = videoTravis.currentTime;
 
     const videoDurationUpdated = (videoCurrentDuration * 100) / videoDuration;
-
     barVideo.style.width =videoDurationUpdated + "%";
 }
 
+
+function updateBarVolumeWidth() {
+    const volumeMax = 100;
+    const currentVolume = videoTravis.volume;
+
+    const updatedVolume = currentVolume * 100;
+    console.log(updatedVolume);
+
+    barVolume.style.width = updatedVolume + "%";
+}
 
 timeVideo.addEventListener('mouseover', function() {
     timeVideo.style.height = "10px";
@@ -128,6 +151,10 @@ timeVideo.addEventListener('mouseleave', function() {
 
 timeVideo.addEventListener('change', function(ev) {
     videoTravis.currentTime = ev.target.value;
+})
+
+videoTravis.addEventListener('volumechange', function() {
+    updateBarVolumeWidth();
 })
 
 window.addEventListener('keydown', (ev) => {
@@ -169,28 +196,34 @@ volumeController.addEventListener('change', function(ev) {
 })
 
 volumeController.addEventListener('mouseover', function() {
-    volumeController.style.marginTop = "-15px"
-    volumeController.style.display = "flex";
+    volumeController.style.visibility = "visible";
+    volumeController.style.width = "50%"
+
 })
 
 volumeController.addEventListener('mouseleave', function() {
-    volumeController.style.display = "none";
+    volumeController.style.visibility = "hidden";
+    volumeController.style.width = "0"
+
 })
 
 
 muteVolume.addEventListener('mouseover', function() {
-    volumeController.style.marginTop = "-15px"
-
+    volumeController.style.visibility = "visible"
+    volumeController.style.width = "50%"
     volumeController.style.display = "flex";
 })
 
 muteVolume.addEventListener('mouseleave', function() {
-    volumeController.style.marginTop = "-15px"
+    volumeController.style.visibility = "hidden";
+    volumeController.style.width = "0"
 
-    volumeController.style.display = "none";
 })
 
 
 speedController.addEventListener('change', function(ev) {
     videoTravis.playbackRate = ev.target.value;
 });
+
+updateBarVolumeWidth();
+updateTextDuration();

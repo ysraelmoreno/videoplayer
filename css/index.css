@@ -105,16 +105,25 @@
     display: flex;
     align-content: center;
     align-items: center;
+    padding:  5px 10px;
 }
 
 #volumeController {
     display: flex;
-    position: relative;
-    top: -15px;
-    width: 15px;
+    width: 0;
+    transition: all 0.2s ease;
+    margin-right: 20px;
     background-color: white;
-    max-height: 5000px;
-    height: 100%;
+    height: 7px;
+}
+
+#buttonsPlay {
+    display: flex;
+    align-items: center;
+}
+
+#buttonsPlay p {
+    color: white;
 }
 
 #soundContainer button i {
@@ -123,8 +132,7 @@
 
 #soundContainer {
     display: flex;
-    width: 60px;
+    width: 150px;
     height: 30px;
     align-items: center;
-    flex-direction: column;
 }
