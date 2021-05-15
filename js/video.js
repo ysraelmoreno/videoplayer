@@ -57,11 +57,13 @@ function mute() {
 }
 
 function stop() {
-    videoTravis.pause();
-    videoTravis.currentTime = 0;
-
-    if (playButton.className == "playing") {
-        play();
+    if (videoTravis.className === "playing") {
+        videoTravis.pause();
+        videoTravis.currentTime = 0;
+        videoTravis.play();
+    } else {
+        videoTravis.pause();
+        videoTravis.currentTime = 0;
     }
 }
 
@@ -158,7 +160,6 @@ function updateBarWidth() {
     const videoDurationUpdated = (videoCurrentDuration * 100) / videoDuration;
     barVideo.style.width =videoDurationUpdated + "%";
 }
-
 
 function updateBarVolumeWidth() {
     const currentVolume = videoTravis.volume;
