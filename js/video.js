@@ -1,11 +1,14 @@
 let videoTravis = document.getElementById('videoTravis');
-let buttons = document.getElementById('buttons');
-let muteVolume = document.getElementById('muteVolume');
 let timeVideo = document.getElementById('timevideo');
 let volumeController = document.getElementById('volumeController');
+
+let buttons = document.getElementById('buttons');
+let muteVolume = document.getElementById('muteVolume');
 let playButton = document.getElementById('playButton');
+
 let speedController = document.getElementById('speedController')
 let textVideoDuration = document.getElementById('textVideoDuration')
+let textVideoCurrentDuration = document.getElementById('textVideoCurrentDuration')
 
 function displayButtons() {
     buttons.className = 'showing';
@@ -15,16 +18,25 @@ function stopDisplayButtons(ev) {
     buttons.className = 'hidden';
 }
 
-function play() {
-    if (playButton.className == "paused" && videoTravis.className == "paused") {
-        videoTravis.play();
+async function autoplay() {
+    if (localStorage.getItem('videoLastMinute')) {
+        videoTravis.className = "autoplayed";
+        await play();
+    }
+}
+
+async function play() {
+    if (playButton.className == "paused" && videoTravis.className == "paused" || videoTravis.className == "autoplayed") {
+        await videoTravis.play();
         videoTravis.className = "playing";
+
         playButton.className = "playing";
         playButton.innerHTML = `<i class="fas fa-pause"></i>`
     } else {
         videoTravis.pause();
-        playButton.className = "paused";
         videoTravis.className = "paused";
+
+        playButton.className = "paused";
         playButton.innerHTML = `<i class="fas fa-play"></i>`
     }
 }
@@ -35,9 +47,11 @@ function mute() {
     if(muteVolume.className == "unmuted") {
         lastVolume = videoTravis.volume;
         videoTravis.volume = 0;
+
         muteVolume.className = "muted";
     } else {
         videoTravis.volume = lastVolume;
+
         muteVolume.className = "unmuted"
     }
 }
@@ -57,10 +71,14 @@ function increaseSpeed() {
 
 function increaseVolume() {
     videoTravis.volume += 0.1
+    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
+
 }
 
 function decreaseVolume() {
     videoTravis.volume -= 0.1
+    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
+
 }
 
 function decreaseSpeed() {
@@ -78,15 +96,28 @@ function advanceTenSeconds() {
 function updateTextDuration() {
     let videoDurationMin = videoTravis.duration / 60;
     let videoDurationMinFixed = videoDurationMin.toFixed(2);
-    textVideoDuration.innerHTML = videoDurationMinFixed.replace('.', ':');
+    textVideoDuration.innerHTML = "&nbsp;" + videoDurationMinFixed.replace('.', ':');
+}
+
+async function updateTextCurrentDuration() {
+    let videoDurationMin = await videoTravis.currentTime / 60;
+    let videoDurationMinFixed = videoDurationMin.toFixed(2);
+    textVideoCurrentDuration.innerHTML = videoDurationMinFixed.replace('.', ':') + "&nbsp;/ ";
 }
 
 videoTravis.addEventListener('mouseover', displayButtons);
 videoTravis.addEventListener('mouseleave', stopDisplayButtons)
 
-videoTravis.addEventListener('timeupdate', function(ev) {
+videoTravis.addEventListener('timeupdate', async function(ev) {
+    if(textVideoCurrentDuration.innerHTML === "&nbsp;NaN") {
+        textVideoCurrentDuration.innerHTML = "0:00"
+        updateTextDuration();
+    }
     updateTextDuration();
+    updateTextCurrentDuration();
     updateBarWidth();
+
+    localStorage.setItem('videoLastMinute', videoTravis.currentTime)
 })
 
 videoTravis.addEventListener("click", play);
@@ -99,8 +130,6 @@ videoTravis.addEventListener("dblclick", function(ev) {
     } else {
         backTenSeconds()
     }
-    console.log ()
-
 })
 
 buttons.addEventListener('mouseover', displayButtons);
@@ -132,11 +161,8 @@ function updateBarWidth() {
 
 
 function updateBarVolumeWidth() {
-    const volumeMax = 100;
     const currentVolume = videoTravis.volume;
-
     const updatedVolume = currentVolume * 100;
-    console.log(updatedVolume);
 
     barVolume.style.width = updatedVolume + "%";
 }
@@ -158,7 +184,6 @@ videoTravis.addEventListener('volumechange', function() {
 })
 
 window.addEventListener('keydown', (ev) => {
-    ev.preventDefault;
     if(ev.keyCode == 32) {
         play()
     }
@@ -186,7 +211,10 @@ window.addEventListener('keydown', (ev) => {
     if(ev.key === "f") {
         videoTravis.webkitRequestFullScreen();
     }
-    console.log(ev.key)
+})
+
+window.addEventListener('load', function() {
+
 })
 
 volumeController.addEventListener('change', function(ev) {
@@ -198,13 +226,11 @@ volumeController.addEventListener('change', function(ev) {
 volumeController.addEventListener('mouseover', function() {
     volumeController.style.visibility = "visible";
     volumeController.style.width = "50%"
-
 })
 
 volumeController.addEventListener('mouseleave', function() {
     volumeController.style.visibility = "hidden";
     volumeController.style.width = "0"
-
 })
 
 
@@ -217,7 +243,6 @@ muteVolume.addEventListener('mouseover', function() {
 muteVolume.addEventListener('mouseleave', function() {
     volumeController.style.visibility = "hidden";
     volumeController.style.width = "0"
-
 })
 
 
@@ -226,4 +251,19 @@ speedController.addEventListener('change', function(ev) {
 });
 
 updateBarVolumeWidth();
-updateTextDuration();
+
+let lastVolumeCached = localStorage.getItem('lastVolumeVideo');
+
+if (!lastVolumeCached) {
+    videoTravis.volume = 1;
+} else {
+    videoTravis.volume = lastVolumeCached;
+}
+
+textVideoDuration.innerHTML === "&nbsp;NaN" ? textVideoDuration.innerHTML = "&nbsp;" + "0:00" : textVideoDuration.innerHTML = "&nbsp;" + "0:00"
+
+videoTravis.currentTime = localStorage.getItem('videoLastMinute');
+
+document.addEventListener('DOMContentLoaded', async function() {
+    setTimeout(autoplay, 1000)
+})
