@@ -56,6 +56,15 @@ function mute() {
     }
 }
 
+function setDurationByMouse(event) {
+    let divInitialWidth = timeVideo.getBoundingClientRect().x
+    let divWidth = timeVideo.getBoundingClientRect().width
+    let videoTimeMouse = ((event.screenX - divInitialWidth) * 100) / divWidth;
+    let videoTimeDuration = (videoTravis.duration * videoTimeMouse) / 100;
+
+    videoTravis.currentTime = videoTimeDuration;
+}
+
 function stop() {
     if (videoTravis.className === "playing") {
         videoTravis.pause();
@@ -107,6 +116,53 @@ async function updateTextCurrentDuration() {
     textVideoCurrentDuration.innerHTML = videoDurationMinFixed.replace('.', ':') + "&nbsp;/ ";
 }
 
+
+function updateBarWidth() {
+    const videoDuration = videoTravis.duration;
+    const videoCurrentDuration = videoTravis.currentTime;
+
+    const videoDurationUpdated = (videoCurrentDuration * 100) / videoDuration;
+    barVideo.style.width =videoDurationUpdated + "%";
+}
+
+function updateBarVolumeWidth() {
+    const currentVolume = videoTravis.volume;
+    const updatedVolume = currentVolume * 100;
+
+    barVolume.style.width = updatedVolume + "%";
+}
+
+
+let barVideo = document.createElement("div");
+
+barVideo.style.height = "100%";
+barVideo.style.width = "0";
+barVideo.style.backgroundColor = "red";
+
+timeVideo.append(barVideo);
+
+let barVolume = document.createElement("div");
+
+barVolume.style.height = "100%";
+barVolume.style.width = "0";
+barVolume.style.backgroundColor = "red";
+barVolume.style.transition = "all 0.2s ease";
+volumeController.append(barVolume)
+
+updateBarVolumeWidth();
+
+let lastVolumeCached = localStorage.getItem('lastVolumeVideo');
+
+if (!lastVolumeCached) {
+    videoTravis.volume = 1;
+} else {
+    videoTravis.volume = lastVolumeCached;
+}
+
+textVideoDuration.innerHTML === "&nbsp;NaN" ? textVideoDuration.innerHTML = "&nbsp;" + "0:00" : textVideoDuration.innerHTML = "&nbsp;" + "0:00"
+
+videoTravis.currentTime = localStorage.getItem('videoLastMinute');
+
 videoTravis.addEventListener('mouseover', displayButtons);
 videoTravis.addEventListener('mouseleave', stopDisplayButtons)
 
@@ -137,36 +193,7 @@ videoTravis.addEventListener("dblclick", function(ev) {
 buttons.addEventListener('mouseover', displayButtons);
 buttons.addEventListener('mouseleave', stopDisplayButtons)
 
-let barVideo = document.createElement("div");
-
-barVideo.style.height = "100%";
-barVideo.style.width = "0";
-barVideo.style.backgroundColor = "red";
-
-timeVideo.append(barVideo);
-
-let barVolume = document.createElement("div");
-
-barVolume.style.height = "100%";
-barVolume.style.width = "0";
-barVolume.style.backgroundColor = "red";
-barVolume.style.transition = "all 0.2s ease";
-volumeController.append(barVolume)
-
-function updateBarWidth() {
-    const videoDuration = videoTravis.duration;
-    const videoCurrentDuration = videoTravis.currentTime;
-
-    const videoDurationUpdated = (videoCurrentDuration * 100) / videoDuration;
-    barVideo.style.width =videoDurationUpdated + "%";
-}
-
-function updateBarVolumeWidth() {
-    const currentVolume = videoTravis.volume;
-    const updatedVolume = currentVolume * 100;
-
-    barVolume.style.width = updatedVolume + "%";
-}
+timeVideo.addEventListener('click', setDurationByMouse)
 
 timeVideo.addEventListener('mouseover', function() {
     timeVideo.style.height = "10px";
@@ -214,10 +241,6 @@ window.addEventListener('keydown', (ev) => {
     }
 })
 
-window.addEventListener('load', function() {
-
-})
-
 volumeController.addEventListener('change', function(ev) {
     var value = ev.target.value / 100;
 
@@ -250,20 +273,6 @@ muteVolume.addEventListener('mouseleave', function() {
 speedController.addEventListener('change', function(ev) {
     videoTravis.playbackRate = ev.target.value;
 });
-
-updateBarVolumeWidth();
-
-let lastVolumeCached = localStorage.getItem('lastVolumeVideo');
-
-if (!lastVolumeCached) {
-    videoTravis.volume = 1;
-} else {
-    videoTravis.volume = lastVolumeCached;
-}
-
-textVideoDuration.innerHTML === "&nbsp;NaN" ? textVideoDuration.innerHTML = "&nbsp;" + "0:00" : textVideoDuration.innerHTML = "&nbsp;" + "0:00"
-
-videoTravis.currentTime = localStorage.getItem('videoLastMinute');
 
 document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(autoplay, 1000)
