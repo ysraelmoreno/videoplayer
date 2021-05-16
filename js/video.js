@@ -49,9 +49,11 @@ function mute() {
         videoTravis.volume = 0;
 
         muteVolume.className = "muted";
+        muteVolume.innerHTML = `<i class="fas fa-volume-mute"></i>`;
     } else {
         videoTravis.volume = lastVolume;
 
+        muteVolume.innerHTML = `<i class="fas fa-volume-up"></i>`;
         muteVolume.className = "unmuted"
     }
 }
@@ -59,10 +61,20 @@ function mute() {
 function setDurationByMouse(event) {
     let divInitialWidth = timeVideo.getBoundingClientRect().x
     let divWidth = timeVideo.getBoundingClientRect().width
-    let videoTimeMouse = ((event.screenX - divInitialWidth) * 100) / divWidth;
-    let videoTimeDuration = (videoTravis.duration * videoTimeMouse) / 100;
 
+    let videoTimeMouse = ((event.clientX - divInitialWidth) * 100) / divWidth;
+    let videoTimeDuration = (videoTravis.duration * videoTimeMouse) / 100;
     videoTravis.currentTime = videoTimeDuration;
+}
+
+function setVolumeByMouse(event) {
+    let divInitialWidth = volumeController.getBoundingClientRect().x
+    let divWidth = volumeController.getBoundingClientRect().width
+
+    let videoVolume = (event.clientX - divInitialWidth) / divWidth;
+    let videoFinalVolume = (videoTravis.duration * videoVolume) / 100;
+    console.log(videoFinalVolume)
+    videoTravis.volume = videoFinalVolume;
 }
 
 function stop() {
@@ -105,15 +117,11 @@ function advanceTenSeconds() {
 }
 
 function updateTextDuration() {
-    let videoDurationMin = videoTravis.duration / 60;
-    let videoDurationMinFixed = videoDurationMin.toFixed(2);
-    textVideoDuration.innerHTML = "&nbsp;" + videoDurationMinFixed.replace('.', ':');
+    textVideoDuration.innerHTML = "&nbsp;" + new Date(videoTravis.duration * 1000).toISOString().substr(11, 8).slice(3)
 }
 
 async function updateTextCurrentDuration() {
-    let videoDurationMin = await videoTravis.currentTime / 60;
-    let videoDurationMinFixed = videoDurationMin.toFixed(2);
-    textVideoCurrentDuration.innerHTML = videoDurationMinFixed.replace('.', ':') + "&nbsp;/ ";
+    textVideoCurrentDuration.innerHTML =  new Date(videoTravis.currentTime * 1000).toISOString().substr(11, 8).slice(3) + "&nbsp;/ ";
 }
 
 
@@ -181,14 +189,16 @@ videoTravis.addEventListener('timeupdate', async function(ev) {
 videoTravis.addEventListener("click", play);
 
 videoTravis.addEventListener("dblclick", function(ev) {
-    if (ev.clientX > 800) {
+    if (ev.clientX > 1080) {
         advanceTenSeconds()
-    } else if (ev.clientX >= 500 && ev.clientX < 800) {
+    } else if (ev.clientX >= 800 && ev.clientX < 1080) {
         videoTravis.webkitRequestFullScreen();
     } else {
         backTenSeconds()
     }
 })
+
+volumeController.addEventListener('click', setVolumeByMouse)
 
 buttons.addEventListener('mouseover', displayButtons);
 buttons.addEventListener('mouseleave', stopDisplayButtons)
@@ -272,8 +282,12 @@ muteVolume.addEventListener('mouseleave', function() {
 
 speedController.addEventListener('change', function(ev) {
     videoTravis.playbackRate = ev.target.value;
+    console.log(videoTravis.getBoundingClientRect());
 });
 
 document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(autoplay, 1000)
 })
+
+
+
