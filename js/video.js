@@ -131,8 +131,7 @@ function alterVideoDurationByNumbers(event) {
 
         const estimatedDuration = (duration * 1000) / finalDuration
 
-        videoTravis.currentTime = estimatedDuration;1
-
+        videoTravis.currentTime = estimatedDuration;
     }
 }
 
