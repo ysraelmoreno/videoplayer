@@ -140,6 +140,9 @@ function updateBarVolumeWidth() {
     barVolume.style.width = updatedVolume + "%";
 }
 
+function fullscreen() {
+    videoTravis.webkitRequestFullScreen();
+}
 
 let barVideo = document.createElement("div");
 
@@ -221,34 +224,22 @@ videoTravis.addEventListener('volumechange', function() {
     updateBarVolumeWidth();
 })
 
+const stateCommands = {
+    " ": "play()",
+    "ArrowUp": "increaseVolume()",
+    "ArrowDown": "decreaseVolume()",
+    "ArrowRight": "advanceTenSeconds()",
+    "ArrowLeft": "backTenSeconds()",
+    "m": "mute()",
+    "f": "fullscreen()"
+}
+
 window.addEventListener('keydown', (ev) => {
-    if(ev.keyCode == 32) {
-        play()
-    }
-
-    if (ev.key === "ArrowUp") {
-        increaseVolume()
-    }
-
-    if (ev.key === "ArrowDown") {
-        decreaseVolume()
-    }
-
-    if (ev.key === "ArrowRight") {
-        advanceTenSeconds()
-    }
-
-    if (ev.key === "ArrowLeft") {
-        backTenSeconds()
-    }
-
-    if(ev.key === "m") {
-        mute()
-    }
-
-    if(ev.key === "f") {
-        videoTravis.webkitRequestFullScreen();
-    }
+    Object.keys(stateCommands).forEach(key => {
+        if(ev.key == key) {
+            eval(stateCommands[key]);
+        }
+    })
 })
 
 volumeController.addEventListener('change', function(ev) {
@@ -288,6 +279,3 @@ speedController.addEventListener('change', function(ev) {
 document.addEventListener('DOMContentLoaded', async function() {
     setTimeout(autoplay, 1000)
 })
-
-
-
