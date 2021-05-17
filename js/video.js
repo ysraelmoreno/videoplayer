@@ -72,9 +72,7 @@ function setVolumeByMouse(event) {
     let divWidth = volumeController.getBoundingClientRect().width
 
     let videoVolume = (event.clientX - divInitialWidth) / divWidth;
-    let videoFinalVolume = (videoTravis.duration * videoVolume) / 100;
-    console.log(videoFinalVolume)
-    videoTravis.volume = videoFinalVolume;
+    videoTravis.volume = videoVolume;
 }
 
 function stop() {
@@ -124,6 +122,19 @@ async function updateTextCurrentDuration() {
     textVideoCurrentDuration.innerHTML =  new Date(videoTravis.currentTime * 1000).toISOString().substr(11, 8).slice(3) + "&nbsp;/ ";
 }
 
+function alterVideoDurationByNumbers(event) {
+    const regex = /[0-9]/gi;
+
+    if(regex.test(event.key)) {
+        const finalDuration = videoTravis.duration;
+        const duration = event.key * 10;
+
+        const estimatedDuration = (duration * 1000) / finalDuration
+
+        videoTravis.currentTime = estimatedDuration;1
+
+    }
+}
 
 function updateBarWidth() {
     const videoDuration = videoTravis.duration;
@@ -158,6 +169,7 @@ barVolume.style.height = "100%";
 barVolume.style.width = "0";
 barVolume.style.backgroundColor = "red";
 barVolume.style.transition = "all 0.2s ease";
+
 volumeController.append(barVolume)
 
 updateBarVolumeWidth();
@@ -186,6 +198,7 @@ videoTravis.addEventListener('timeupdate', async function(ev) {
     updateTextCurrentDuration();
     updateBarWidth();
 
+    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
     localStorage.setItem('videoLastMinute', videoTravis.currentTime)
 })
 
@@ -226,15 +239,16 @@ videoTravis.addEventListener('volumechange', function() {
 
 const stateCommands = {
     " ": "play()",
-    "ArrowUp": "increaseVolume()",
-    "ArrowDown": "decreaseVolume()",
-    "ArrowRight": "advanceTenSeconds()",
-    "ArrowLeft": "backTenSeconds()",
-    "m": "mute()",
-    "f": "fullscreen()"
+    ArrowUp: "increaseVolume()",
+    ArrowDown: "decreaseVolume()",
+    ArrowRight: "advanceTenSeconds()",
+    ArrowLeft: "backTenSeconds()",
+    m: "mute()",
+    f: "fullscreen()"
 }
 
 window.addEventListener('keydown', (ev) => {
+    alterVideoDurationByNumbers(ev)
     Object.keys(stateCommands).forEach(key => {
         if(ev.key == key) {
             eval(stateCommands[key]);
@@ -273,7 +287,6 @@ muteVolume.addEventListener('mouseleave', function() {
 
 speedController.addEventListener('change', function(ev) {
     videoTravis.playbackRate = ev.target.value;
-    console.log(videoTravis.getBoundingClientRect());
 });
 
 document.addEventListener('DOMContentLoaded', async function() {
