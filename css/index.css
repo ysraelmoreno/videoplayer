@@ -1,6 +1,25 @@
 body {
-    background-color: rgb(24, 24, 24);
+    background-color: rgb(12, 12, 12);
 }
+
+svg {
+    margin: -10px ;
+}
+
+h1 {
+    margin-top: -10px;
+    color: rgb(204, 204, 204);
+}
+
+#subtitle {
+    color: rgb(204, 204, 204);
+    margin-bottom: 30px;
+}
+
+svg path {
+    fill: rgb(204, 204, 204);
+}
+
 #videoTravis {
     max-width: 1280px;
     background-color: black;
@@ -15,14 +34,12 @@ body {
     z-index: 999;
     height: 60px;
     justify-content: space-between;
-    background: rgb(0,0,0);
     border-radius: 10px;
-    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(2,0,36,0) 100%);
     transition: all 0.2s ease;
     position: relative;
     padding-top: 10px;
     position: relative;
-    top: -61px;
+    top: -60px;
 }
 
 #videoContainer {
@@ -139,4 +156,25 @@ body {
     width: 150px;
     height: 30px;
     align-items: center;
+}
+
+#credits {
+    display: flex;
+    flex-direction: column;
+}
+
+#credits h5 {
+    font-weight: 500;
+    color: rgb(204, 204, 204);
+}
+
+#credits a {
+    text-align: center;
+    font-size: 11px;
+    transition: all 0.2s ease;
+    color: rgb(130, 130, 130);
+}
+
+#credits a:hover {
+    color: white;
 }
