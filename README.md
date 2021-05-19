@@ -1,6 +1,6 @@
 # videoplayer
 
-![Desktop](/docs/Desktop-1.png)
+![Desktop](/docs/image1.png)
 
 This is a videoplayer created with JS, HTML and CSS.
 
