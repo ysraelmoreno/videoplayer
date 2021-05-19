@@ -11,6 +11,7 @@ h1 {
     color: rgb(204, 204, 204);
 }
 
+
 #subtitle {
     color: rgb(204, 204, 204);
     margin-bottom: 30px;
@@ -20,16 +21,114 @@ svg path {
     fill: rgb(204, 204, 204);
 }
 
-#videoTravis {
-    max-width: 1280px;
+#videoTravis-theater-mode{
+    max-width: 2600px !important;
+    width: 100%;
     background-color: black;
     border-radius: 10px;
+}
+
+#video-timer-theater-mode {
+    display: flex;
+    max-width: 2600px;
+
+    width: 100%;
+    height: 30px;
+    position: relative;
+    top: -20px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#buttons-theater-mode {
+    display: flex;
+    flex-direction: column;
+    max-width: 2600px;
+    width: 100%;
+    z-index: 999;
+    height: 60px;
+    justify-content: space-between;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    position: relative;
+    padding-top: 10px;
+    position: relative;
+    top: -60px;
+}
+
+
+#buttons-theater-mode button {
+    width: 40px;
+    height: 30px;
+
+    margin: 5px;
+    border-radius: 5px;
+
+    color: white;
+    background: none;
+    border: none;
+}
+
+#buttons-theater-mode div {
+    display: flex;
+}
+
+#buttons-theater-mode select {
+    width: fit-content;
+    height: fit-content;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: rgba(31, 31, 31, 0.618);
+    transition: all 0.2s ease;
+}
+
+#buttons-theater-mode select:hover {
+    background-color: rgb(17, 17, 17);
+}
+
+
+#video-timer-theater-mode {
+    display: flex;
+    max-width: 2600px;
+    width: 100%;
+    height: 30px;
+    position: relative;
+    top: -20px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#timevideo-theater-mode {
+    height: 5px;
+    transition: all 0.2s ease;
+    background-color: rgb(126, 126, 126);
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: -10px;
+}
+
+
+#videoTravis {
+    max-width: 1280px;
+    width: 100%;
+    background-color: black;
+    border-radius: 10px;
+}
+.theater-mode {
+    max-width: 2600px !important;
+    width: 100%;
 }
 
 #buttons {
     display: flex;
     flex-direction: column;
-    max-width: 850px;
+    max-width: 1280px;
     width: 100%;
     z-index: 999;
     height: 60px;
@@ -44,8 +143,8 @@ svg path {
 
 #videoContainer {
     display: flex;
-    height: 100vh;
     border-radius: 10px;
+    margin-top: 50px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -82,8 +181,9 @@ svg path {
     height: fit-content;
     padding: 5px;
     border: none;
+    border-radius: 5px;
     color: white;
-    background-color: rgb(31, 31, 31);
+    background-color: rgba(31, 31, 31, 0.618);
     transition: all 0.2s ease;
 }
 
@@ -94,6 +194,7 @@ svg path {
 #videoControllers {
     display: flex;
     position: relative;
+    width: 100%;
     top: -10px;
     align-items: center;
     justify-content: space-between;
@@ -102,7 +203,8 @@ svg path {
 
 #video-timer {
     display: flex;
-    max-width: 850px;
+    max-width: 1280px;
+
     width: 100%;
     height: 30px;
     position: relative;

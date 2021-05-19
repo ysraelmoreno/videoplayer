@@ -1,5 +1,6 @@
 let videoTravis = document.getElementById('videoTravis');
 let timeVideo = document.getElementById('timevideo');
+let videoTimer = document.getElementById('video-timer')
 let volumeController = document.getElementById('volumeController');
 
 let buttons = document.getElementById('buttons');
@@ -10,8 +11,23 @@ let speedController = document.getElementById('speedController')
 let textVideoDuration = document.getElementById('textVideoDuration')
 let textVideoCurrentDuration = document.getElementById('textVideoCurrentDuration')
 
+let cache = {}
+
 function setComponentClassname(component, name) {
     component.className = name;
+}
+
+function theatermode() {
+    videoTravis.id = "videoTravis-theater-mode";
+    buttons.id = "buttons-theater-mode";
+    timeVideo.id = "timevideo-theater-mode";
+    videoTimer.id = "video-timer-theater-mode"
+}
+
+function setCache(variable) {
+    Object.keys(variable).forEach(key => {
+        localStorage.setItem(key, variable[key]);
+     });
 }
 
 function getComponentClassname(component) {
@@ -23,7 +39,13 @@ function getVideoDuration() {
 }
 
 function setVideoVolume(volume) {
-    videoTravis.volume = volume
+    videoTravis.volume = volume;
+
+    let videoVolume = {
+        lastVolumeVideo: videoTravis.volume
+    }
+
+    Object.assign(cache, videoVolume)
 }
 
 function getVideoVolume() {
@@ -79,7 +101,6 @@ function mute() {
 
         setComponentClassname(muteVolume, 'muted')
 
-        muteVolume.className = "muted";
         muteVolume.innerHTML = `<i class="fas fa-volume-mute"></i>`;
     } else {
         setVideoVolume(lastVolume);
@@ -123,13 +144,21 @@ function increaseSpeed() {
 
 function increaseVolume() {
     videoTravis.volume += 0.1
-    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
+    let videoVolume = {
+        lastVolumeVideo: videoTravis.volume
+    }
+
+    Object.assign(cache, videoVolume);
 
 }
 
 function decreaseVolume() {
     videoTravis.volume -= 0.1
-    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
+    let videoVolume = {
+        lastVolumeVideo: videoTravis.volume
+    }
+
+    Object.assign(cache, videoVolume);
 
 }
 
@@ -202,7 +231,7 @@ barVideo.style.height = "100%";
 barVideo.style.width = "0";
 barVideo.style.backgroundColor = "red";
 barVideo.style.transition = "all 0.2s ease"
-
+barVideo.style.boxShadow = "0px 0px 30px 0px red"
 timeVideo.append(barVideo);
 
 let barVolume = document.createElement("div");
@@ -220,6 +249,7 @@ localStorage.getItem('lastVolumeVideo') ?  setVideoVolume(localStorage.getItem('
 localStorage.getItem('videoLastMinute') ? setVideoCurrentTime(localStorage.getItem('videoLastMinute')) : setVideoCurrentTime(0);
 
 videoTravis.addEventListener('mouseover', displayButtons);
+
 videoTravis.addEventListener('mouseleave', stopDisplayButtons)
 
 videoTravis.addEventListener('timeupdate', async function(ev) {
@@ -231,8 +261,13 @@ videoTravis.addEventListener('timeupdate', async function(ev) {
     updateTextCurrentDuration();
     updateBarWidth();
 
-    localStorage.setItem('lastVolumeVideo', videoTravis.volume);
-    localStorage.setItem('videoLastMinute', videoTravis.currentTime)
+    let videoCache = {
+        lastVolumeVideo: videoTravis.volume,
+        videoLastMinute: videoTravis.currentTime
+    }
+
+    Object.assign(cache, videoCache);
+    setCache(cache);
 })
 
 videoTravis.addEventListener("click", play);
@@ -250,6 +285,7 @@ videoTravis.addEventListener("dblclick", function(ev) {
 volumeController.addEventListener('click', setVolumeByMouse)
 
 buttons.addEventListener('mouseover', displayButtons);
+
 buttons.addEventListener('mouseleave', stopDisplayButtons)
 
 timeVideo.addEventListener('click', setDurationByMouse)
@@ -265,8 +301,6 @@ timeVideo.addEventListener('mouseleave', function() {
 timeVideo.addEventListener('change', function(ev) {
     videoTravis.currentTime = ev.target.value;
 })
-
-timeVideo.addEventListener('drag', setDurationByMouse)
 
 videoTravis.addEventListener('volumechange', function() {
     updateBarVolumeWidth();
