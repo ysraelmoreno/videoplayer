@@ -19,6 +19,17 @@ function setComponentClassname(component, name) {
   component.className = name;
 }
 
+const stateCommands = {
+  " ": play,
+  ArrowUp: increaseVolume,
+  ArrowDown: decreaseVolume,
+  ArrowRight: advanceTenSeconds,
+  ArrowLeft: backTenSeconds,
+  m: mute,
+  f: fullscreen,
+  r: stop,
+};
+
 function theatermode() {
   videoTravis.id = "videoTravis-theater-mode";
   buttons.id = "buttons-theater-mode";
@@ -221,17 +232,6 @@ function updateBarVolumeWidth() {
 function fullscreen() {
   videoTravis.webkitRequestFullScreen();
 }
-
-const stateCommands = {
-  " ": play,
-  ArrowUp: increaseVolume,
-  ArrowDown: decreaseVolume,
-  ArrowRight: advanceTenSeconds,
-  ArrowLeft: backTenSeconds,
-  m: mute,
-  f: fullscreen,
-  r: stop,
-};
 
 let barVideo = document.createElement("div");
 
